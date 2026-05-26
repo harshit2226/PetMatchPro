@@ -1,4 +1,4 @@
-const Pet = require("../models/Pet");
+const Pet = require("../models/pet");
 const cloudinary = require("../config/cloudinary");
 
 // 🟢 ADD PET (WITH IMAGE UPLOAD SUPPORT)
