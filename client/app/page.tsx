@@ -1,76 +1,101 @@
+"use client";
+
+import Link from "next/link";
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f5f7fb]">
-      
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-10 py-5 bg-white shadow-sm">
-        <h1 className="text-3xl font-bold text-blue-600">
-          PetMatchPro
-        </h1>
+    <main className="min-h-screen bg-[#f8fafc]">
 
-        <div className="flex gap-6 text-gray-700 font-medium">
-          <button>Home</button>
-          <button>Pets</button>
-          <button>About</button>
-          <button>Contact</button>
+      {/* HERO SECTION */}
+      <section className="px-6 md:px-20 py-24 flex flex-col md:flex-row items-center justify-between gap-16">
+
+        <div className="max-w-2xl">
+
+          <p className="text-blue-600 font-bold uppercase tracking-wider">
+            Find Your Perfect Companion
+          </p>
+
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mt-4">
+            Adopt Pets <br />
+            With Love ❤️
+          </h1>
+
+          <p className="text-gray-600 text-xl mt-8 leading-relaxed">
+            PetMatchPro helps you discover loving pets waiting
+            for a forever home. Browse pets, adopt instantly,
+            and connect with caring owners.
+          </p>
+
+          <div className="flex gap-5 mt-10">
+
+            <Link
+              href="/pets"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-lg transition"
+            >
+              Explore Pets
+            </Link>
+
+            <Link
+              href="/signup"
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-2xl text-lg font-bold transition"
+            >
+              Get Started
+            </Link>
+
+          </div>
+
         </div>
-      </nav>
 
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center py-28 px-6">
-        
-        <h2 className="text-6xl font-extrabold text-gray-800 leading-tight max-w-4xl">
-          Find Your Perfect
-          <span className="text-blue-600"> Pet Companion</span>
-        </h2>
-
-        <p className="mt-6 text-gray-600 text-lg max-w-2xl">
-          Adopt lovable pets, connect with shelters,
-          and give animals a forever home with PetMatchPro.
-        </p>
-
-        <div className="flex gap-5 mt-10">
-          <button className="bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
-            Explore Pets
-          </button>
-
-          <button className="border border-blue-600 text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-blue-50 transition">
-            Add Pet
-          </button>
+        <div className="w-full md:w-[500px]">
+          <img
+            src="https://images.unsplash.com/photo-1517849845537-4d257902454a"
+            alt="Pet"
+            className="rounded-3xl shadow-2xl object-cover h-[550px] w-full"
+          />
         </div>
+
       </section>
 
-      {/* Features */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8 px-10 pb-20">
+      {/* FEATURES */}
 
-        <div className="bg-white p-8 rounded-3xl shadow-md">
-          <h3 className="text-2xl font-bold text-gray-800">
-            Easy Adoption
-          </h3>
+      <section className="px-6 md:px-20 py-20">
 
-          <p className="mt-4 text-gray-600">
-            Quickly browse pets and connect with owners or shelters.
-          </p>
-        </div>
+        <h2 className="text-4xl font-extrabold text-center text-gray-900">
+          Why Choose PetMatchPro?
+        </h2>
 
-        <div className="bg-white p-8 rounded-3xl shadow-md">
-          <h3 className="text-2xl font-bold text-gray-800">
-            Verified Listings
-          </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
 
-          <p className="mt-4 text-gray-600">
-            All pet profiles are verified for better trust and safety.
-          </p>
-        </div>
+          <div className="bg-white p-10 rounded-3xl shadow-lg">
+            <h3 className="text-2xl font-bold text-blue-600">
+              Trusted Adoption
+            </h3>
 
-        <div className="bg-white p-8 rounded-3xl shadow-md">
-          <h3 className="text-2xl font-bold text-gray-800">
-            Smart Matching
-          </h3>
+            <p className="text-gray-600 mt-5 leading-relaxed">
+              Verified pet listings and secure adoption process.
+            </p>
+          </div>
 
-          <p className="mt-4 text-gray-600">
-            Find pets that match your lifestyle and preferences.
-          </p>
+          <div className="bg-white p-10 rounded-3xl shadow-lg">
+            <h3 className="text-2xl font-bold text-pink-600">
+              Easy To Use
+            </h3>
+
+            <p className="text-gray-600 mt-5 leading-relaxed">
+              Modern dashboard with smooth browsing experience.
+            </p>
+          </div>
+
+          <div className="bg-white p-10 rounded-3xl shadow-lg">
+            <h3 className="text-2xl font-bold text-green-600">
+              Fast Matching
+            </h3>
+
+            <p className="text-gray-600 mt-5 leading-relaxed">
+              Discover pets according to your preferences instantly.
+            </p>
+          </div>
+
         </div>
 
       </section>
