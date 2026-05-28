@@ -1,107 +1,167 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import API from "../../lib/api";
+
+import PetCard from "../../components/PetCard";
+import SearchBar from "../../components/SearchBar";
+import CategoryFilter from "../../components/CategoryFilter";
+import Loading from "../../components/Loading";
+import EmptyState from "../../components/EmptyState";
 
 interface Pet {
   _id: string;
   petName: string;
   breed: string;
   age: number;
-  description: string;
   image: string;
+  description: string;
 }
 
 export default function Pets() {
+
   const [pets, setPets] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchPets = async () => {
-    try {
-      const res = await API.get("/pets");
+  const [search, setSearch] = useState<string>("");
 
-      setPets(res.data);
-    } catch (error) {
-      console.log(error);
-      alert("Failed to fetch pets");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("All");
+
+  // FILTER PETS
+  const filteredPets = useMemo(() => {
+
+    let updatedPets = [...pets];
+
+    // SEARCH FILTER
+    if (search.trim() !== "") {
+
+      updatedPets = updatedPets.filter((pet) =>
+        pet.petName
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+
     }
-  };
 
+    // CATEGORY FILTER
+    if (selectedCategory !== "All") {
+
+      updatedPets = updatedPets.filter((pet) =>
+        pet.breed
+          .toLowerCase()
+          .includes(selectedCategory.toLowerCase())
+      );
+
+    }
+
+    return updatedPets;
+
+  }, [pets, search, selectedCategory]);
+
+  // FETCH PETS
   useEffect(() => {
-  const loadPets = async () => {
-    await fetchPets();
-  };
 
-  loadPets();
-}, []);
+    const fetchPets = async () => {
+
+      try {
+
+        const res = await API.get("/pets");
+
+        setPets(res.data);
+
+      } catch (error) {
+
+        console.log(error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    fetchPets();
+
+  }, []);
 
   return (
-  <main className="min-h-screen bg-[#f8fafc] px-6 md:px-16 py-16">
 
-    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+    <main className="min-h-screen bg-[#f5f7fb] px-6 py-16">
 
-      <div>
-        <h1 className="text-5xl font-extrabold text-gray-900">
-          Available Pets
-        </h1>
+      <div className="max-w-7xl mx-auto">
 
-        <p className="text-gray-500 mt-3 text-lg">
-          Find your perfect furry companion
-        </p>
-      </div>
+        {/* HEADING */}
 
-      <input
-        type="text"
-        placeholder="Search pets..."
-        className="border border-gray-300 px-5 py-4 rounded-2xl w-full md:w-[350px] outline-none focus:border-blue-600"
-      />
+        <div className="text-center">
 
-    </div>
+          <h1 className="text-5xl md:text-6xl font-extrabold text-blue-600">
+            Available Pets
+          </h1>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
+          <p className="text-gray-500 mt-4 text-lg">
+            Find your perfect furry friend today 🐶
+          </p>
 
-      {pets.map((pet) => (
-        <div
-          key={pet._id}
-          className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 hover:-translate-y-2"
-        >
+        </div>
 
-          <img
-            src={pet.image}
-            alt={pet.petName}
-            className="w-full h-72 object-cover"
+        {/* SEARCH BAR */}
+
+        <div className="mt-12">
+
+          <SearchBar
+            value={search}
+            onChange={setSearch}
           />
 
-          <div className="p-7">
+        </div>
 
-            <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-bold text-gray-800">
-                {pet.petName}
-              </h2>
+        {/* CATEGORY FILTER */}
 
-              <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-bold">
-                {pet.age} yrs
-              </span>
-            </div>
+        <div className="mt-8">
 
-            <p className="text-gray-600 mt-3 font-medium">
-              Breed: {pet.breed}
-            </p>
+          <CategoryFilter
+            selected={selectedCategory}
+            setSelected={setSelectedCategory}
+          />
 
-            <p className="text-gray-500 mt-4 leading-relaxed">
-              {pet.description}
-            </p>
+        </div>
 
-            <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold transition">
-              Adopt Now
-            </button>
+        {/* LOADING */}
+
+        {loading ? (
+
+          <div className="mt-20">
+            <Loading />
+          </div>
+
+        ) : filteredPets.length === 0 ? (
+
+          <div className="mt-20">
+            <EmptyState />
+          </div>
+
+        ) : (
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-16">
+
+            {filteredPets.map((pet) => (
+
+              <PetCard
+                key={pet._id}
+                pet={pet}
+              />
+
+            ))}
 
           </div>
 
-        </div>
-      ))}
+        )}
 
-    </div>
+      </div>
 
-  </main>
-);
+    </main>
+
+  );
 }

@@ -6,6 +6,8 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const petRoutes = require("./routes/petRoutes");
+const favoriteRoutes =
+require("./routes/favoriteRoutes");
 
 dotenv.config();
 
@@ -23,6 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 // 🟢 ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/pets", petRoutes);
+app.use(
+  "/api/favorites",
+  favoriteRoutes
+);
 
 // 🟢 TEST ROUTE
 app.get("/", (req, res) => {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import API from "../../lib/api";
+import { toast } from "react-hot-toast/headless";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -22,12 +23,11 @@ export default function Login() {
 
       localStorage.setItem("token", res.data.token);
 
-      alert("Login Successful");
-
+      toast.success("Login Successful");
       window.location.href = "/";
     } catch (error) {
       console.log(error);
-      alert("Invalid Credentials");
+      toast.error("Invalid Credentials");
     }
   };
 

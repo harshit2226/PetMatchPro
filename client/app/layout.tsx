@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "PetMatchPro",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-[#f8fafc] text-gray-900">
         <Navbar />
+        <Toaster position="top-right" />
 
         <main>{children}</main>
 

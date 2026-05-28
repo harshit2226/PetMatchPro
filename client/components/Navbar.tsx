@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import {
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 
 export default function Navbar() {
 
@@ -9,6 +14,8 @@ export default function Navbar() {
     if (typeof window === "undefined") return false;
     return !!localStorage.getItem("token");
   });
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const logout = () => {
 
@@ -20,9 +27,11 @@ export default function Navbar() {
 
   return (
 
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+
+        {/* LOGO */}
 
         <Link
           href="/"
@@ -31,7 +40,9 @@ export default function Navbar() {
           PetMatchPro
         </Link>
 
-        <div className="flex items-center gap-6 text-gray-700 font-medium">
+        {/* DESKTOP MENU */}
+
+        <div className="hidden md:flex items-center gap-6">
 
           <Link href="/">Home</Link>
 
@@ -39,9 +50,13 @@ export default function Navbar() {
 
           {loggedIn && (
             <>
-              <Link href="/add-pet">Add Pet</Link>
+              <Link href="/add-pet">
+                Add Pet
+              </Link>
 
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/dashboard">
+                Dashboard
+              </Link>
             </>
           )}
 
@@ -72,7 +87,77 @@ export default function Navbar() {
 
         </div>
 
+        {/* MOBILE BUTTON */}
+
+        <button
+          onClick={() =>
+            setMenuOpen(!menuOpen)
+          }
+          className="md:hidden text-2xl"
+        >
+          {menuOpen ? (
+            <FaTimes />
+          ) : (
+            <FaBars />
+          )}
+        </button>
+
       </div>
+
+      {/* MOBILE MENU */}
+
+      {menuOpen && (
+
+        <div className="md:hidden bg-white border-t border-gray-200 px-6 py-6 flex flex-col gap-5">
+
+          <Link href="/">
+            Home
+          </Link>
+
+          <Link href="/pets">
+            Pets
+          </Link>
+
+          {loggedIn && (
+            <>
+              <Link href="/add-pet">
+                Add Pet
+              </Link>
+
+              <Link href="/dashboard">
+                Dashboard
+              </Link>
+            </>
+          )}
+
+          {!loggedIn ? (
+            <>
+              <Link
+                href="/login"
+                className="bg-blue-600 text-white px-5 py-3 rounded-xl text-center"
+              >
+                Login
+              </Link>
+
+              <Link
+                href="/signup"
+                className="border border-blue-600 text-blue-600 px-5 py-3 rounded-xl text-center"
+              >
+                Signup
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={logout}
+              className="bg-red-500 text-white px-5 py-3 rounded-xl"
+            >
+              Logout
+            </button>
+          )}
+
+        </div>
+
+      )}
 
     </nav>
 
