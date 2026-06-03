@@ -1,20 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import {
-  FaBars,
-  FaTimes,
-  FaPaw,
-  FaHeart,
-  FaComments,
-} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaBars, FaTimes, FaPaw } from "react-icons/fa";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState<boolean>(() => {
-    return typeof window !== "undefined" && !!localStorage.getItem("token");
-  });
+  const [loggedIn, setLoggedIn] = useState(false);
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  setLoggedIn(!!token);// eslint-disable-next-line react-hooks/set-state-in-effect
+}, []);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -22,8 +19,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="h-20 flex items-center justify-between">
 
           {/* Logo */}
@@ -31,7 +28,7 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-3"
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 flex items-center justify-center text-white shadow-lg">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 flex items-center justify-center text-white text-xl shadow-lg">
               <FaPaw />
             </div>
 
@@ -40,14 +37,15 @@ export default function Navbar() {
                 PetMatchPro
               </h1>
 
-              <p className="text-xs text-slate-500 -mt-1">
-                Find Your Best Friend
+              <p className="text-xs text-slate-500">
+                Find Your Perfect Companion
               </p>
             </div>
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8">
+
             <Link
               href="/"
               className="font-medium text-slate-700 hover:text-orange-500 transition"
@@ -64,17 +62,15 @@ export default function Navbar() {
 
             <Link
               href="/favorites"
-              className="font-medium text-slate-700 hover:text-orange-500 transition flex items-center gap-2"
+              className="font-medium text-slate-700 hover:text-orange-500 transition"
             >
-              <FaHeart size={14} />
               Favorites
             </Link>
 
             <Link
               href="/chat"
-              className="font-medium text-slate-700 hover:text-orange-500 transition flex items-center gap-2"
+              className="font-medium text-slate-700 hover:text-orange-500 transition"
             >
-              <FaComments size={14} />
               Chat
             </Link>
 
@@ -103,14 +99,14 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:border-orange-500 hover:text-orange-500 transition"
+                  className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-semibold hover:bg-orange-600 transition shadow-md"
                 >
                   Login
                 </Link>
 
                 <Link
                   href="/signup"
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold shadow-lg hover:scale-105 transition"
+                  className="px-5 py-2.5 rounded-xl border border-orange-500 text-orange-500 font-semibold hover:bg-orange-50 transition"
                 >
                   Sign Up
                 </Link>
@@ -118,17 +114,17 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={logout}
-                className="px-5 py-2.5 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                className="px-5 py-2.5 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition shadow-md"
               >
                 Logout
               </button>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden text-2xl text-slate-800"
+            className="lg:hidden text-2xl text-slate-700"
           >
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -136,78 +132,53 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="lg:hidden py-6 border-t border-slate-200 space-y-4">
+          <div className="lg:hidden pb-6 border-t border-slate-200 mt-2 pt-4">
 
-            <Link
-              href="/"
-              className="block text-slate-700 font-medium"
-            >
-              Home
-            </Link>
+            <div className="flex flex-col gap-4">
 
-            <Link
-              href="/pets"
-              className="block text-slate-700 font-medium"
-            >
-              Pets
-            </Link>
+              <Link href="/">Home</Link>
 
-            <Link
-              href="/favorites"
-              className="block text-slate-700 font-medium"
-            >
-              Favorites
-            </Link>
+              <Link href="/pets">Pets</Link>
 
-            <Link
-              href="/chat"
-              className="block text-slate-700 font-medium"
-            >
-              Chat
-            </Link>
+              <Link href="/favorites">Favorites</Link>
 
-            {loggedIn && (
-              <>
-                <Link
-                  href="/add-pet"
-                  className="block text-slate-700 font-medium"
+              <Link href="/chat">Chat</Link>
+
+              {loggedIn && (
+                <>
+                  <Link href="/add-pet">Add Pet</Link>
+
+                  <Link href="/dashboard">
+                    Dashboard
+                  </Link>
+                </>
+              )}
+
+              {!loggedIn ? (
+                <>
+                  <Link
+                    href="/login"
+                    className="bg-orange-500 text-white px-4 py-3 rounded-xl text-center"
+                  >
+                    Login
+                  </Link>
+
+                  <Link
+                    href="/signup"
+                    className="border border-orange-500 text-orange-500 px-4 py-3 rounded-xl text-center"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              ) : (
+                <button
+                  onClick={logout}
+                  className="bg-red-500 text-white px-4 py-3 rounded-xl"
                 >
-                  Add Pet
-                </Link>
-
-                <Link
-                  href="/dashboard"
-                  className="block text-slate-700 font-medium"
-                >
-                  Dashboard
-                </Link>
-              </>
-            )}
-
-            {!loggedIn ? (
-              <div className="flex flex-col gap-3 pt-4">
-                <Link
-                  href="/login"
-                  className="text-center py-3 border rounded-xl"
-                >
-                  Login
-                </Link>
-
-                <Link
-                  href="/signup"
-                  className="text-center py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            ) : (
-              <button
-                onClick={logout}
-                className="w-full mt-4 py-3 rounded-xl bg-red-500 text-white"
-              >
-                Logout
-              </button>
-            )}
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
