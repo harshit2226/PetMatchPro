@@ -15,28 +15,45 @@ export default function CategoryFilter({
   selected,
   setSelected,
 }: Props) {
-
   return (
-
-    <div className="flex gap-4 flex-wrap">
-
+    <div className="flex flex-wrap gap-3">
       {categories.map((item) => (
-
         <button
           key={item}
           onClick={() => setSelected(item)}
-          className={`px-5 py-2 rounded-xl font-semibold ${
-            selected === item
-              ? "bg-blue-600 text-white"
-              : "bg-white border"
-          }`}
+          className={`
+            px-6
+            py-3
+            rounded-2xl
+            font-semibold
+            transition-all
+            duration-300
+            border
+            ${
+              selected === item
+                ? `
+                  bg-gradient-to-r
+                  from-orange-500
+                  to-amber-400
+                  text-white
+                  border-transparent
+                  shadow-lg
+                  scale-105
+                `
+                : `
+                  bg-white
+                  text-slate-800
+                  border-slate-200
+                  hover:border-orange-300
+                  hover:text-orange-500
+                  hover:shadow-md
+                `
+            }
+          `}
         >
           {item}
         </button>
-
       ))}
-
     </div>
-
   );
 }

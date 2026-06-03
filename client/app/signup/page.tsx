@@ -3,6 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import API from "../../lib/api";
+import Link from "next/link";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -11,7 +12,11 @@ export default function Signup() {
     password: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -20,9 +25,9 @@ export default function Signup() {
 
   const handleSubmit = async () => {
     try {
-      const res = await API.post("/auth/signup", form);
+      setLoading(true);
 
-      console.log(res.data);
+      const res = await API.post("/auth/signup", form);
 
       alert(res.data.message || "Signup Successful");
 
@@ -31,81 +36,139 @@ export default function Signup() {
         email: "",
         password: "",
       });
-
     } catch (error) {
-
-      console.log("Signup Error:", error);
-
       if (axios.isAxiosError(error)) {
-
-        console.log("Response Data:", error.response?.data);
-
         alert(
           error.response?.data?.message ||
-          "Signup failed"
+            "Signup Failed"
         );
-
       } else {
-
         alert("Something went wrong");
-
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#f5f7fb] px-6">
+    <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 flex items-center justify-center px-6 py-12">
+      <div className="max-w-6xl w-full grid lg:grid-cols-2 bg-white rounded-[40px] overflow-hidden shadow-2xl">
 
-      <div className="bg-white w-full max-w-md p-10 rounded-3xl shadow-xl">
+        {/* LEFT SIDE */}
+        <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-orange-500 to-amber-400 text-white p-14 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-white/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
 
-        <h1 className="text-4xl font-extrabold text-center text-blue-600">
-          Create Account
-        </h1>
+          <h1 className="text-5xl font-bold leading-tight relative z-10">
+            Find Your
+            <br />
+            Perfect Pet 🐾
+          </h1>
 
-        <p className="text-center text-gray-500 mt-3">
-          Join PetMatchPro today
-        </p>
+          <p className="mt-6 text-lg text-orange-50 relative z-10">
+            Join thousands of pet lovers and connect with
+            verified shelters and pet owners across India.
+          </p>
 
-        <div className="mt-10 space-y-5">
+          <div className="mt-12 space-y-4 relative z-10">
+            <div className="flex items-center gap-3">
+              <span>✔</span>
+              <p>Verified Pet Listings</p>
+            </div>
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-xl px-5 py-4 outline-none focus:border-blue-600"
-          />
+            <div className="flex items-center gap-3">
+              <span>✔</span>
+              <p>Safe Adoption Process</p>
+            </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-xl px-5 py-4 outline-none focus:border-blue-600"
-          />
+            <div className="flex items-center gap-3">
+              <span>✔</span>
+              <p>Thousands of Happy Families</p>
+            </div>
+          </div>
+        </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-xl px-5 py-4 outline-none focus:border-blue-600"
-          />
+        {/* RIGHT SIDE */}
+        <div className="p-8 md:p-14">
+          <div className="max-w-md mx-auto">
+            <div className="text-center">
+              <h2 className="text-4xl font-bold text-slate-900">
+                Create Account
+              </h2>
 
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold text-lg transition"
-          >
-            Signup
-          </button>
+              <p className="text-slate-500 mt-3">
+                Welcome to PetMatchPro
+              </p>
+            </div>
 
+            <div className="mt-10 space-y-5">
+              <div>
+                <label className="text-sm font-medium text-slate-700">
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full mt-2 px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-700">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="john@example.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full mt-2 px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-700">
+                  Password
+                </label>
+
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="w-full mt-2 px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 transition"
+              >
+                {loading ? "Creating Account..." : "Create Account"}
+              </button>
+
+              <p className="text-center text-slate-500">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="text-orange-500 font-semibold"
+                >
+                  Login
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
 
       </div>
-
     </main>
   );
 }
