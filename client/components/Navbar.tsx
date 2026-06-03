@@ -35,7 +35,7 @@ useEffect(() => {
 
             <div>
               <h1 className="text-2xl font-black text-slate-900">
-                PetMatchPro v2.0
+                PetMatchPro
               </h1>
 
               <p className="text-xs text-slate-500">
