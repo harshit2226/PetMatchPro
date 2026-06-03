@@ -10,7 +10,8 @@ export default function Navbar() {
 
 useEffect(() => {
   const token = localStorage.getItem("token");
-  setLoggedIn(!!token);// eslint-disable-next-line react-hooks/set-state-in-effect
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  setLoggedIn(!!token); 
 }, []);
 
   const logout = () => {
